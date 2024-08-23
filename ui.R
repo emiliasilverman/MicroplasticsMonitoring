@@ -1,3 +1,4 @@
+library()
 ui = dashboardPage(
   dark = T,
   title = "Microplastics Monitoring App",
@@ -68,10 +69,62 @@ ui = dashboardPage(
                         div(style = "overflow-x: scroll",
                             DT::dataTableOutput("table1")
                         ))
+                  ),
+                  box(title = "Location in Water Column",
+                      width = 12,
+                      DT::dataTableOutput("table2")
                   )
-                )
+                ),
       )
-    )
-  )
-)
+      ),
+      tabItem(tabName = "characterization",
+              fluidRow(
+                column(12,
+                       shiny::HTML("<br><br><center><h1>Particles Characterized</h1></center><br>"),
+                       shiny::HTML("<h5>View and analyze the particles characterized in the study.</h5>")
+                )
+              ),
+              fluidRow(
+                column(2,
+                       "Location In Water Column",
+                       checkboxGroupInput('location', 
+                                          "",
+                                          choices = c("Surface","Midwater", "Bottom")) %>%
+                         popover(title = "",
+                                 content = "Choose the location(s) in the water column to be studied.",
+                                 placement = "right")
+                )
+                ),
+              fluidRow(
+                column(2, 
+                       numericInput('total_plastics_sample', "Total Microplastics Found in Samples",1) %>%
+                         popover(placement = "right",
+                                 title = "Selection Help",
+                                 content = c("Select the total microplastics found in sample.")
+                                 
+                         ),
+              )
+              ),
+              fluidRow(
+                column(2, 
+                       numericInput('total_plastics_blank', "Total Microplastics Found in Blanks",1) %>%
+                         popover(placement = "right",
+                                 title = "Selection Help",
+                                 content = c("Select the total microplastics found in blank.")
+                                 
+                         ),
+                )
+              ),
+              fluidRow(
+                column(2,
+                       dateRangeInput('sampling_period', "Sampling Period", format = "mm/dd/yy", separator = " - ") %>%
+                         popover(placement = "right",
+                                 title = "Selection Help",
+                                 content = c("Select date when sample was taken"))
+                       ),
+              )
+
+      ) # Close tabItems
+    ) # Close dashboardBody
+  ) # Close dashboardPage
 )

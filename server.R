@@ -39,4 +39,28 @@ server = function(input, output) {
       write.csv(monitoring_plan(), file, row.names = FALSE)
     }
   )
+  
+  water_location <- reactive({
+   locations <- input$location
+   if (is.null(locations) || length(locations) == 0) {
+     return(tibble(Location = character()))
+   }
+   tibble(Location = locations)
+  })
+  
+  output$table2 <- DT:: renderDataTable(datatable(
+    water_location(), 
+    selection = 'none',
+    rownames = F,
+    options = list(
+      paging = FALSE,
+      fixedColumns = TRUE,
+      autoWidth = TRUE,
+      ordering = TRUE,
+      server = F, 
+      dom = 'Bfrtip',
+      searching = F
+    ),
+    class = "display",
+    style="bootstrap"))
 }
