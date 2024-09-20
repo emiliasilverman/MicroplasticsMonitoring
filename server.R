@@ -41,15 +41,36 @@ server = function(input, output) {
   )
   
   water_location <- reactive({
-   locations <- input$location
-   if (is.null(locations) || length(locations) == 0) {
-     return(tibble(Location = character()))
-   }
-   tibble(Location = locations)
+    # Check if any location has been selected
+    if (is.null(input$location) || length(input$location) == 0) {
+      return(tibble(Water_Level = "No location selected"))
+    }
+    
+    # Create a table with the selected water levels
+    data <- tibble(
+      Water_Level = input$location
+    )
+    
+    return(data)
+  })
+  
+  water_location <- reactive({
+    data <- tibble(
+      Water_Level = character()  
+    )
+    if(input$location == 'surface'){
+      data <- data %>% add_row(Water_Level = "surface")
+    }
+    else if(input$location == 'midwater'){
+      data <- data %>% add_row(Water_Level = "midwater")
+    }
+    else
+      data <- data %>% add_row(Water_Level = 'bottom')
+    return(data)
   })
   
   output$table2 <- DT:: renderDataTable(datatable(
-    water_location(), 
+    water_location(),
     selection = 'none',
     rownames = F,
     options = list(

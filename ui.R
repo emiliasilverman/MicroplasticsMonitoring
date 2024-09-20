@@ -124,7 +124,15 @@ ui = dashboardPage(
                        ),
               )
 
-      ) # Close tabItems
-    ) # Close dashboardBody
-  ) # Close dashboardPage
+      ),
+      tabItem(tabName = "about",
+              fluidRow(
+                column(12,
+                       shiny::HTML("<br><br><center><h1>About</h1></center><br>"),
+                       shiny::HTML("<h5>Enter text</h5>")
+                )
+              ),
+      )
+    ) 
+  ) 
 )
